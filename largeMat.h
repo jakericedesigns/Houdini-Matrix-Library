@@ -74,21 +74,6 @@ struct large_mat{
 		}
 		this = C;
 	}
-
-	/* -- DEPRICATED, just use matrix product you dork.
-	void outerProduct(large_mat B){
-	    float product[];
-
-	    for(int i = 0; i < len(this.mat); i++){
-	        for(int j = 0; j < len(B.mat); j++){
-	            append(product, this.mat[i] * B.mat[j]);
-	    	}
-	    }
-	    this.rows = this.rows;
-	    this.cols = B.cols;
-	    this.mat = product;
-	}*/
-
 }
 
 float dotproduct(float a[], b[]){
@@ -147,7 +132,7 @@ large_mat largeident(int rows, columns){
 		append(A.mat, 0);
 		i++;
 	}
-	
+
 	for(int i = 0; i < rows; i++){
 		for(int j = 0; j < columns; j++){
 			if(i = j){
