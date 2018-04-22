@@ -248,7 +248,7 @@ large_mat matrixadd(large_mat A, B){
 
 	if(C.cols !=  B.cols || C.rows != B.rows){
 		printf("ERROR: Matrix Size Mismatch");
-		return;
+		return C;
 	}
 
 	foreach(int index; float val; C.mat){
@@ -262,7 +262,7 @@ large_mat matrixsub(large_mat A, B){
 
 	if(C.cols !=  B.cols || C.rows != B.rows){
 		printf("ERROR: Matrix Size Mismatch");
-		return;
+		return C;
 	}
 
 	foreach(int index; float val; C.mat){
