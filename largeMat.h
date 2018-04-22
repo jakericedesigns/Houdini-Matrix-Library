@@ -74,6 +74,19 @@ struct large_mat{
 		}
 		this = C;
 	}
+
+	void printAsRows(){
+		for(int i = 0; i < this.cols; i++){
+			printf("%g \n", this->getrow(i));
+		}
+	}
+
+	void printAsColumns(){
+		for(int i = 0; i < this.rows; i++){
+			printf("%g \n", this->getcol(i));
+		}
+	}
+
 }
 
 float dotproduct(float a[], b[]){
@@ -182,3 +195,31 @@ large_mat largevect(vector4 x){
         float array[] = array(x[0], x[1], x[2], x[3]);
         return large_mat(array, 1, 4);
 }
+
+
+large_mat matrixproduct(large_mat A, B){
+	if(A.cols != B.rows) return A;
+	large_mat C;
+
+	C->initmat(B.cols, A.rows);
+
+	for(int i = 0; i <= A.cols + 1; i++){
+		for(int j = 0; j <= A.rows + 1; j++){
+			
+			int indexij = C->index(i, j);
+			
+			if(indexij >= B.cols * A.rows) continue;
+
+			for(int k = 0; k <= C.cols; k++){
+				C.mat[indexij] += A->val(i, k) * B->val(k, j);
+			}
+		}
+	}
+	//bug: For some reason rows == 0, unless i reset it
+	//need to figure out where in my loop, shit is getting fucky
+	C.cols = B.cols;
+	C.rows = A.rows;
+	return C;
+
+}
+

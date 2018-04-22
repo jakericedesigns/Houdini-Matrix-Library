@@ -22,6 +22,8 @@ LU LUDecomp(large_mat A){
     int n = A.rows;
 
     for(int i = 0; i  < n; i++){
+        //build upper
+
         for(int k = i; k < n; k++){
             float sum = 0;
             for(int j = 0; j < i; j++){
@@ -31,19 +33,21 @@ LU LUDecomp(large_mat A){
             upper.mat[index] = A->val(i, k) - sum;
 
         }
-
+        //set lower
         for (int k = i; k < n; k++) {
             if(i == k){
                 int index = lower->index(i, i);
-                lower.mat[index] == 1; //diag == 1
+                lower.mat[index] = 1.; //diag == 1
             }else{
-                float sum = 0;
+                
+                float sum = 0.;
                 for(int j = 0; j < i; j++){
                     sum += lower->val(k, j) * upper->val(j, i);
                 }
                 int index = lower->index(k, i);
                 lower.mat[index] = (A->val(k, i) - sum) / upper->val(i,i);
             }
+
         }    
     }
     return LU(A, upper, lower);    
