@@ -75,6 +75,26 @@ struct large_mat{
 		this = C;
 	}
 
+	void matrixadd(large_mat B){
+		if(this.cols !=  B.cols || this.rows != B.rows){
+			printf("ERROR: Matrix Size Mismatch");
+			return;
+		}
+		foreach(int index; float val; this.mat){
+			this.mat[index] += B.mat[index];
+		}
+	}
+
+	void matrixsub(large_mat B){
+		if(this.cols !=  B.cols || this.rows != B.rows){
+			printf("ERROR: Matrix Size Mismatch");
+			return;
+		}
+		foreach(int index; float val; this.mat){
+			this.mat[index] -= B.mat[index];
+		}
+	}
+
 	void printAsRows(){
 		for(int i = 0; i < this.cols; i++){
 			printf("%g \n", this->getrow(i));
@@ -124,7 +144,6 @@ large_mat buildmat(int rows, columns){
 		i++;
 	}
 	return A;
-
 }
 
 large_mat buildmat(matrix3 m){
@@ -223,3 +242,31 @@ large_mat matrixproduct(large_mat A, B){
 
 }
 
+
+large_mat matrixadd(large_mat A, B){
+	large_mat C = A;
+
+	if(C.cols !=  B.cols || C.rows != B.rows){
+		printf("ERROR: Matrix Size Mismatch");
+		return;
+	}
+
+	foreach(int index; float val; C.mat){
+		C.mat[index] += B.mat[index];
+	}
+	return C;
+}
+
+large_mat matrixsub(large_mat A, B){
+	large_mat C = A;
+
+	if(C.cols !=  B.cols || C.rows != B.rows){
+		printf("ERROR: Matrix Size Mismatch");
+		return;
+	}
+
+	foreach(int index; float val; C.mat){
+		C.mat[index] -= B.mat[index];
+	}
+	return C;
+}
