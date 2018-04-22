@@ -122,6 +122,23 @@ large_mat buildmat(matrix3 m){
 	return A;
 }
 
+large_mat buildmat(matrix m){
+	large_mat A;
+	A.rows = 4;
+	A.cols = 4;
+	A.mat = set(m);
+	return A;
+}
+
+large_mat buildmat(matrix2 m){
+	large_mat A;
+	A.rows = 2;
+	A.cols = 2;
+	A.mat = array(m.xx, m.xy, m.yx, m.yy);
+	return A;
+}
+
+
 large_mat largeident(int rows, columns){
 	large_mat A;
 	A.rows = rows;
@@ -146,7 +163,6 @@ large_mat largeident(int rows, columns){
 }
 
 //vectors by default are column vectors
-
 large_mat largevect(float x[]){
         return large_mat(x, 1, len(x));
 }
