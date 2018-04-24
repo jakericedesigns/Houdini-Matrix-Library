@@ -41,7 +41,8 @@ struct large_mat{
 	
 	void largetranspose(){
 		large_mat A = this;
-
+		A.rows = this.cols;
+		A.cols = this.rows;
 		for(int i = 0; i < this.cols; i++){
 			for(int j = 0; j < this.rows; j++){
 				A.mat[A->index(j, i)] = this->val(i, j);
