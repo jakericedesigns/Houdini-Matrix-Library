@@ -41,7 +41,7 @@ float vect[] = [1, 0, 0, 1, 5, 1, 2, 3, 5, 8];
 large_mat y = largevect(vect);
 ```
 
-Let's computer the outer product of vector **b** and its' **transpose** for our first useage example:
+Let's computer the outer product of vector **b** and its' transpose **b^T** for our first useage example:
 
 ```c
 #include "PATH_TO_HEADER/largeMat.h"
