@@ -1,13 +1,15 @@
 # Houdini Matrix Library
 ### This is so useless to so many people, but if you're idiotic enough to embark on a large matrix adventure in Houdini, let me aid you in your journey.
 
+
+
 ## USAGE
 
 This is a framework for NxM matrix operations in Houdini, to get started simply clone the repo `https://github.com/jakericedesigns/Houdini-Matrix-Library.git` or download it on github. 
 
-One method of installation involves doing a custom include path in you `houdini.env` but I'm honestly too lazy to figure out what that is. I think Nick Taylor's Aelib does something like that, you can stalk his repo if you desperately want to do that, otherwise just `#include PATH/TO/THE/INCLUDE/largeMat.h` in your wrangles like a normal human.
+One method of installation involves doing a custom include path in your `houdini.env` but I'm honestly too lazy to figure out what that is. I think Nick Taylor's Aelib does something like that, you can stalk his repo if you desperately want to do that, otherwise just `#include PATH/TO/THE/INCLUDE/largeMat.h` in your wrangles like a normal human.
 
-###Matrices and vectors are column major in operation and construction.
+### Matrices and vectors are column major in operation and construction.
 
 Matrices are stored in as a `large_mat` struct. I gave a few different constructor methods for building your matrices. Below are a few different methods:
 
