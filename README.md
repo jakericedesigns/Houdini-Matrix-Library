@@ -1,3 +1,3 @@
 # Houdini Matrix Library
-##Wow No Threading
-###What's Even The Point
+## Wow No Threading
+### What's Even The Point
