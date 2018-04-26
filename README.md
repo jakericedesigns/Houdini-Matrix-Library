@@ -1,5 +1,5 @@
 # Houdini Matrix Library
-### This is so useless to so many people, but if you're idiotic enough to embark on a large matrix adventure in Houdini, let me aid you in your journey.
+### Here's an open source VEX library I've been writing to help make large linear matrix systems a bit easier to work with in vex (you should probably still use Eigen or SciPy).
 
 
 
@@ -40,7 +40,7 @@ float vect[] = [1, 0, 0, 1, 5, 1, 2, 3, 5, 8];
 large_mat y = largevect(vect);
 ```
 
-Let's computer the outer product of vector **b** and itself for our first useage example:
+Let's computer the outer product of vector **b** and its' **transpose** for our first useage example:
 
 ```c
 #include "PATH_TO_HEADER/largeMat.h"
@@ -63,5 +63,5 @@ And then this is the expected result of that snippet:
 {7, 14, 21, 28, 35, 42, 49, 56} 
 {8, 16, 24, 32, 40, 48, 56, 64} 
 ```
-
+Can't do that in vex by default, now can you? :smirk:
 
