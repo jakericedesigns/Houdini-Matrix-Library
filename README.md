@@ -1,5 +1,6 @@
 # Houdini Matrix Library
-### Here's a library for large linear operations with VEX in Houdini. Don't use this for anything important, like it's not going to be fast, it's being written for learning purposes. A better tool for this is without a doubt SciPy or if you're really feeling it, Eigen (C++)
+### Here's a library for large linear operations with VEX in Houdini. 
+Don't use this for anything important, like it's not going to be fast, it's being written for learning purposes. A better tool for this is without a doubt SciPy or if you're really feeling it, Eigen (C++)
 
 
 
