@@ -11,9 +11,10 @@ struct large_mat{
 	int index(int colIdx, rowIdx){ return colIdx + rowIdx * rows; }
 	float val(int colIdx, rowIdx){ return mat[ this->index(colIdx, rowIdx) ]; }
 
-	//convert these into array slices for speec 
+	//convert these into array slices for speed 
 	function float[] getcol(int row_i){
 		float vect[];
+
 		for(int i = 0; i < this.cols; i++){
 			append(vect, this->val(i, row_i));
 		}
@@ -28,10 +29,41 @@ struct large_mat{
 		}
 		return vect;
 	}
+
+
+	void setcol(int row_i; float vals[]){
+		if(len(vals) != cols){
+			printf("ERROR: Col Size Missmatch");
+			return;
+		} 
+		for(int i = 0; i < this.cols; i++){
+				this.mat[this->index(i, row_i)] = vals[i];
+		}
+	}
+
+	
+	void setrow(int col_i; float vals[]){
+		if(len(vals) != rows){
+			printf("ERROR: Row Size Missmatch");
+			return;
+		} 
+		for(int i = 0; i < this.rows; i++){
+				this.mat[this->index(col_i, i)] = vals[i];
+		}
+	}
+
+	void swaprows(int row_A, row_B){
+		float B[] = this->getrow(row_B);
+		this->setrow(row_B, this->getrow(row_A));
+		this->setrow(row_A, B);
+	}
+
+	void swapcols(int col_A, col_B){
+		float B[] = this->getrow(col_B);
+		this->setcol(col_B, this->getrow(col_A));
+		this->setcol(col_A, B);
+	}
 	//
-
-
-
 
 	void flatten(){
 		this.cols = this.cols * this.rows;
@@ -66,7 +98,7 @@ struct large_mat{
 
 
 	void matrixproduct(large_mat B){
-		if(this.cols != B.rows){
+		if(this.rows != B.cols){
 			printf("ERROR: Matrix Size Mismatch");
 			return;
 		} 
@@ -87,9 +119,44 @@ struct large_mat{
 				
 			}
 		}
-
+		C.mat = C.mat[:this.cols * B.rows];
 		this = C;
 	}
+
+	void matrixproduct(large_mat B; string flag){
+		if(this.rows != B.cols){
+			printf("ERROR: Matrix Size Mismatch");
+			return;
+		} 
+
+
+		large_mat C;
+
+		resize(C.mat, this.cols * B.rows);
+		C.cols = this.cols;
+		C.rows = B.rows;
+		if(flag == "-d") printf("start length: %g \n", len(C.mat));
+		for(int i = 0; i < this.cols; i++){
+			for(int j = 0; j < B.rows ; j++){
+				int indexij = C->index(i, j);
+				C.mat[indexij] = 0; 
+
+				for(int k = 0; k <= B.cols; k++){
+					C.mat[indexij] += this->val(i, k) * B->val(k, j);				
+				}
+				
+			}
+		}
+
+		C.mat = C.mat[:this.cols * B.rows];
+		if(flag == "-d") printf("end length: %g \n", len(C.mat));
+
+		this = C;
+		if(flag == "-d") printf("end cols: %g \n", this.cols);
+		if(flag == "-d") printf("end rows: %g \n", this.rows);		
+	}
+
+
 
 	void matrixadd(large_mat B){
 		if(this.cols !=  B.cols || this.rows != B.rows){
@@ -110,6 +177,20 @@ struct large_mat{
 			this.mat[index] -= B.mat[index];
 		}
 	}
+	
+	void matrixmultconst(float b){
+	
+		foreach(int i; float val; this.mat){
+		    this.mat[i] = val * b;
+		}
+	}
+	void matrixdivconst(float b){
+	
+		foreach(int i; float val; this.mat){
+		    this.mat[i] = val / b;
+		}
+	}
+
 
 
 
@@ -166,25 +247,14 @@ large_mat buildmat(matrix2 m){
 }
 
 
-large_mat largeident(int rows, columns){
+large_mat largeident(int rows){
 	large_mat A;
 	A.rows = rows;
-	A.cols = columns;
-
-	int i = 0;
-	while(i < rows * columns){
-		append(A.mat, 0);
-		i++;
-	}
-
+	A.cols = rows;
+	resize(A.mat, rows * rows);
 	for(int i = 0; i < rows; i++){
-		for(int j = 0; j < columns; j++){
-			if(i = j){
-				int index = A->index(i, j);
-				A.mat[index] = 1;
-			} 
-		}
-
+		int index = A->index(i, i);
+		A.mat[index] = 1;
 	}
 
 	return A;
@@ -213,16 +283,16 @@ large_mat largevect(vector4 x){
 }
 
 large_mat matrixproduct(large_mat A, B){
-	if(A.cols != B.rows){
+	if(A.rows != B.cols){
 			printf("ERROR: Matrix Size Mismatch");
 			return A;
 	}
-	large_mat C;
 
+
+	large_mat C;
 	resize(C.mat, A.cols * B.rows);
 	C.cols = A.cols;
 	C.rows = B.rows;
-
 	for(int i = 0; i < A.cols; i++){
 		for(int j = 0; j < B.rows ; j++){
 			int indexij = C->index(i, j);
@@ -234,7 +304,7 @@ large_mat matrixproduct(large_mat A, B){
 			
 		}
 	}
-
+	C.mat = C.mat[:A.cols * B.rows];
 	return C;
 }
 
@@ -266,6 +336,9 @@ large_mat matrixsub(large_mat A, B){
 	return C;
 }
 
+
+
+
 large_mat largetranspose(large_mat A){
 	large_mat B = buildmat(A.rows, A.cols);
 	for(int i = 0; i < A.cols; i++){
@@ -277,3 +350,33 @@ large_mat largetranspose(large_mat A){
 	}
 	return B;
 }
+
+large_mat matrixmultconst(large_mat A; float b){
+
+	foreach(int i; float val; A.mat){
+	    A.mat[i] = val * b;
+	}
+	return A;
+}
+large_mat matrixdivconst(large_mat A; float b){
+
+	foreach(int i; float val; A.mat){
+	    A.mat[i] = val / b;
+	}
+	return A;
+}
+
+large_mat mataugment(large_mat A, B){
+	large_mat OUT = buildmat(A.cols * 2, A.rows);
+	for(int i = 0; i < OUT.cols; i++){
+			for(int j = 0; j < OUT.rows; j++){
+				if(i < A.cols){
+					OUT.mat[OUT->index(i, j)] = A->val(i, j);
+				}else{
+					OUT.mat[OUT->index(i, j)] = B->val(i % A.cols, j);
+				}
+			}
+	}
+	return OUT;
+}
+
