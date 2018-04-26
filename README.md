@@ -43,13 +43,16 @@ large_mat y = largevect(vect);
 Let's computer the outer product of vector **b** and itself for our first useage example:
 
 ```c
+#include "PATH_TO_HEADER/largeMat.h"
+
 float b_init[] = {1, 2, 3, 4, 5, 6 ,7 ,8};
 large_mat b = largevect(b);
-b->matrixproduct(b->largetranspose());
+
+b->matrixproduct(b->largetranspose()); //matrix multiplication works between NxM and MxP sized inputs.
 b->printAsCols(); 
 ```
 
-
+And then this is the expected result of that snippet:
 ```
 {1, 2, 3, 4, 5, 6, 7, 8} 
 {2, 4, 6, 8, 10, 12, 14, 16} 
