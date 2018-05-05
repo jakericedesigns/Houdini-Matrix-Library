@@ -1,14 +1,14 @@
 struct large_mat{
 	float mat[];
 
-	int cols;
-	int rows;
+	int cols = 1;
+	int rows = 1;
 
 	int rowsize(){ return len(mat) / cols; }
 	int colsize(){ return len(mat) / rows; }
 
 	//int index(int colIdx, rowIdx){ return colIdx * cols + rowIdx; }
-	int index(int colIdx, rowIdx){ return colIdx + rowIdx * rows; }
+	int index(int colIdx, rowIdx){ return colIdx * rows + rowIdx;}
 	float val(int colIdx, rowIdx){ return mat[ this->index(colIdx, rowIdx) ]; }
 
 	//convert these into array slices for speed 
@@ -70,7 +70,18 @@ struct large_mat{
 		this.rows = 1;
 	}
 
+	void fillrandom(){
+		foreach(int index; float val; this.mat){
+			mat[index] = (rand(index + val) - .5) * 2.;
+		}
+	}
 	
+	void fillrandom(int seed){
+		foreach(int index; float val; this.mat){
+			mat[index] = (rand(index + val + seed) - .5) * 2.;
+		}
+	}	
+
 	void largetranspose(){
 		large_mat A = this;
 		A.rows = this.cols;
@@ -191,23 +202,51 @@ struct large_mat{
 		}
 	}
 
+	void resizemat(int columns, rows){
+			if(columns == 0 || rows == 0){
+				printf("ERROR: Matrix cannot have 0 Rows or Columns");
+				return;
+			}
+			this.cols = columns;
+			this.rows = rows;
+			resize(this.mat, columns * rows);
+	}
 
+	float vect_norm(){
+		float sum = 0;	
+		foreach(float a; this.mat){
+			sum += a * a;
+		}
+		return sqrt(sum);
+	}
 
-
+	void reordermat(){
+		int order[];
+		for(int i = 0; i < this.rows; i++){
+			for(int j = 0; j < this.cols; j++){
+				int idx = this->index(j, i);
+				append(order, idx);
+				
+			
+			}
+		}
+		printf("%g \n", order);
+		this.mat = reorder(this.mat, order);
+	}
 }
 
 
 
 
-float dotproduct(float a[], b[]){
-	if(len(a) != len(b)){
+float dotproduct(large_mat A, B){
+	if(len(A.mat) != len(B.mat)){
 		printf("what the fuck are you even trying rn tho \n");
 		return 0.0;
 	} 
 
 	float sum = 0.0;
-	foreach(int i; float currVal; a){
-		sum += currVal * b[i];
+	foreach(int i; float currVal; A.mat){
+		sum += currVal * B.mat[i];
 	}
 	return sum;
 }
