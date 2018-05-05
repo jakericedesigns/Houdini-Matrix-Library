@@ -8,7 +8,7 @@ struct large_mat{
 	int colsize(){ return len(mat) / rows; }
 
 	//int index(int colIdx, rowIdx){ return colIdx * cols + rowIdx; }
-	int index(int colIdx, rowIdx){ return colIdx * rows + rowIdx;}
+	int index(int colIdx, rowIdx){ return colIdx + rowIdx * this.cols;}
 	float val(int colIdx, rowIdx){ return mat[ this->index(colIdx, rowIdx) ]; }
 
 	//convert these into array slices for speed 
@@ -130,7 +130,7 @@ struct large_mat{
 				
 			}
 		}
-		C.mat = C.mat[:this.cols * B.rows];
+		//C.mat = C.mat[:this.cols * B.rows];
 		this = C;
 	}
 
@@ -219,7 +219,7 @@ struct large_mat{
 		}
 		return sqrt(sum);
 	}
-
+	/*
 	void reordermat(){
 		int order[];
 		for(int i = 0; i < this.rows; i++){
@@ -233,6 +233,7 @@ struct large_mat{
 		printf("%g \n", order);
 		this.mat = reorder(this.mat, order);
 	}
+	*/
 }
 
 
