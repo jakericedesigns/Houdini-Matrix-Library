@@ -158,7 +158,7 @@ large_mat LUInverse(large_mat A){
     
     for(int i = 0; i < A.rows; i++){
         large_mat b;
-        b->largevect(ident->getcol(i));
+        b->buildvect(ident->getcol(i));
         large_mat inverse = solveLU(lower, upper, b);
         ident->setcol(i, inverse.mat);
     }

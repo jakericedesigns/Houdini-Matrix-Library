@@ -53,15 +53,6 @@ struct large_mat{
 			this.rows = rows;
 			resize(this.mat, columns * rows);
 	}
-	void buildvect(float A[]){
-		if(len(A) <= 0){
-			printf("ERROR: Array Must be Larger than len 0");
-			return;
-		}
-		this.mat = A;
-		this.cols = len(A);
-		this.rows = 1;
-	}
 
 	void setrow(int col_i; float vals[]){
 		if(len(vals) != rows){
@@ -120,13 +111,13 @@ struct large_mat{
 
 /*------------------------VECTOR CONSTRUCTORS-------------------------------*/
 	//vectors by default are column vectors
-	void largevect(float x[]){
+	void buildvect(float x[]){
 	        this.mat = x;
 	        this.cols = len(x);
 	        this.rows = 1;
 	}
 
-	void largevect(vector2 x){
+	void buildvect(vector2 x){
 	        float array[] = array(x[0], x[1]);
 	       	
 	       	this.mat = array;
@@ -134,7 +125,7 @@ struct large_mat{
 	        this.rows = 1;
 	}
 
-	void largevect(vector x){
+	void buildvect(vector x){
 	        float array[] = array(x[0], x[1], x[2]);
 
 	        this.mat = array;
@@ -143,7 +134,7 @@ struct large_mat{
 	}
 
 	//i dont support quaternion rotations yet cuz fuck off.
-	void largevect(vector4 x){
+	void buildvect(vector4 x){
 	        float array[] = array(x[0], x[1], x[2], x[3]);
 	        this.mat = array;
 	        this.cols = 4;
@@ -230,7 +221,7 @@ struct large_mat{
 
 	void matrixadd(large_mat B){
 		if(this.cols !=  B.cols || this.rows != B.rows){
-			printf("ERROR: Matrix Size Mismatch");
+			printf("ERROR: Matrix Size Mismatch _ MATADD \n");
 			return;
 		}
 		foreach(int index; float val; this.mat){
@@ -240,7 +231,7 @@ struct large_mat{
 
 	void matrixsub(large_mat B){
 		if(this.cols !=  B.cols || this.rows != B.rows){
-			printf("ERROR: Matrix Size Mismatch");
+			printf("ERROR: Matrix Size Mismatch _ MATSUB \n");
 			return;
 		}
 		foreach(int index; float val; this.mat){
@@ -269,21 +260,21 @@ struct large_mat{
 		}
 		return sqrt(sum);
 	}
-	/*
-	void reordermat(){
-		int order[];
-		for(int i = 0; i < this.rows; i++){
-			for(int j = 0; j < this.cols; j++){
-				int idx = this->index(j, i);
-				append(order, idx);
-				
-			
+
+	void vect_outer(large_mat B){
+		if(B.rows > 1 || this.rows > 1){
+			printf("ERROR: Inputs must both be column vectors");
+			return;
+		}
+		large_mat temp;
+		temp->buildmat(this.cols, B.cols);
+		for(int i = 0; i < this.cols; i++){
+			for(int j = 0; j < B.cols; j++){
+				temp.mat[temp->index(i, j)] = this.mat[i] * B.mat[j];
 			}
 		}
-		printf("%g \n", order);
-		this.mat = reorder(this.mat, order);
+		this = temp;
 	}
-	*/
 }
 
 
@@ -308,7 +299,7 @@ float dotproduct(large_mat A, B){
 
 large_mat matrixproduct(large_mat A, B){
 	if(A.rows != B.cols){
-			printf("ERROR: Matrix Size Mismatch");
+			printf("ERROR: Matrix Size Mismatch _ MATRIXPRODUCT \n");
 			return A;
 	}
 
@@ -330,11 +321,38 @@ large_mat matrixproduct(large_mat A, B){
 	return C;
 }
 
+large_mat matrixproduct_debug(large_mat A, B; string error_message){
+
+	if(A.rows != B.cols){
+			printf("ERROR: Matrix Size Mismatch _ MATRIXPRODUCT \n");
+			printf(error_message);
+			return A;
+	}
+
+
+	large_mat C;
+	C->buildmat(A.cols, B.rows);
+
+	for(int i = 0; i < A.cols; i++){
+		for(int j = 0; j < B.rows ; j++){
+			int indexij = C->index(i, j);
+			C.mat[indexij] = 0; 
+
+			for(int k = 0; k <= B.cols; k++){
+				C.mat[indexij] += A->val(i, k) * B->val(k, j);				
+			}
+			
+		}
+	}
+	return C;
+}
+
+
 large_mat matrixadd(large_mat A, B){
 	large_mat C = A;
 
 	if(C.cols !=  B.cols || C.rows != B.rows){
-		printf("ERROR: Matrix Size Mismatch");
+		printf("ERROR: Matrix Size Mismatch _ MATADD \n");
 		return C;
 	}
 
@@ -348,7 +366,7 @@ large_mat matrixsub(large_mat A, B){
 	large_mat C = A;
 
 	if(C.cols !=  B.cols || C.rows != B.rows){
-		printf("ERROR: Matrix Size Mismatch");
+		printf("ERROR: Matrix Size Mismatch _ MATSUB \n");
 		return C;
 	}
 
@@ -404,4 +422,3 @@ large_mat mataugment(large_mat A, B){
 	}
 	return OUT;
 }
-
