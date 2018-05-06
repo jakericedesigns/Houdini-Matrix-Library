@@ -65,27 +65,24 @@ SVD SVDecomposition(large_mat A){
 			large_mat v_temp;
 			v_temp->buildvect(V->getcol(j));
 			
-			v_temp->vect_outer(u_temp);
-			large_mat temp_outer = v_temp;
-
-			//large_mat temp_outer = matrixproduct_debug(u_temp, v_temp, "temp_outer \n");
+			u_temp->vect_outer(v_temp);
+			u_temp->matrixmultconst(Sigma.mat[j]);
 			
-			temp_outer->matrixmultconst(Sigma.mat[j]);
-			//printf("J VAL %g \n", j);
-			
-			
-			matrix_for_decomp->matrixsub(temp_outer);
-			//matrix_for_decomp->printAsRows();
+			matrix_for_decomp->matrixsub(u_temp->largetranspose());
 		}
 		large_mat v = Singular_Value(matrix_for_decomp, 1e-6);
-	    //printf("%g \n", v.mat);
-		large_mat u = matrixproduct_debug(A->largetranspose(), v, "u_creation bug \n");
+		large_mat u = matrixproduct(A->largetranspose(), v);
+
+		//Singular Value
 		float sigma = vect_norm(u); 
-		//printf("SIGMA: %g \n", sigma);
+
 		u->matrixdivconst(sigma);
+		u->largetranspose();
 
+		//U needs to be set column wise since theyre transposed in their current form
+		U->setcol(i, u.mat);
 
-		append(U.mat, u.mat);
+		//since V is going to be square, we can use normal appending
 		append(V.mat, v.mat);
 		append(Sigma.mat, sigma);
 	}

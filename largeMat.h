@@ -13,6 +13,15 @@ struct large_mat{
 
 
 /*------------------------MATRIX HELPER FUNCTIONS-------------------------------*/
+	void resizemat(int columns, rows){
+			if(columns == 0 || rows == 0){
+				printf("ERROR: Matrix cannot have 0 Rows or Columns");
+				return;
+			}
+			this.cols = columns;
+			this.rows = rows;
+			resize(this.mat, columns * rows);
+	}
 
 	//convert these into array slices for speed 
 	function float[] getcol(int row_i){
@@ -34,9 +43,21 @@ struct large_mat{
 	}
 
 
-	void setcol(int row_i; float vals[]){
-		if(len(vals) != cols){
+	void setcol(int col_i; float vals[]){
+		if(len(vals) != this.rows){
 			printf("ERROR: Col Size Missmatch");
+			return;
+		} 
+		for(int i = 0; i < this.rows; i++){
+				this.mat[this->index(col_i, i)] = vals[i];
+		}
+	}
+
+
+
+	void setrow(int row_i; float vals[]){
+		if(len(vals) != this.cols){
+			printf("ERROR: Row Size Missmatch");
 			return;
 		} 
 		for(int i = 0; i < this.cols; i++){
@@ -44,25 +65,6 @@ struct large_mat{
 		}
 	}
 
-	void resizemat(int columns, rows){
-			if(columns == 0 || rows == 0){
-				printf("ERROR: Matrix cannot have 0 Rows or Columns");
-				return;
-			}
-			this.cols = columns;
-			this.rows = rows;
-			resize(this.mat, columns * rows);
-	}
-
-	void setrow(int col_i; float vals[]){
-		if(len(vals) != rows){
-			printf("ERROR: Row Size Missmatch");
-			return;
-		} 
-		for(int i = 0; i < this.rows; i++){
-				this.mat[this->index(col_i, i)] = vals[i];
-		}
-	}
 
 	void swaprows(int row_A, row_B){
 		float B[] = this->getrow(row_B);
