@@ -18,8 +18,9 @@ LU LUDecomp(large_mat A){
     //doolittle's algo
     
     //SOMETHING FUCKY IS HAPPENING
-    large_mat lower = buildmat(A.cols, A.rows);
-    large_mat upper = buildmat(A.cols, A.rows); 
+    large_mat lower, upper;
+    lower->buildmat(A.cols, A.rows);
+    upper->buildmat(A.cols, A.rows); 
     
     if(A.rows != A.cols){
         printf("ERROR: Matrix is not square, returning UL = 0 \n");
@@ -88,7 +89,8 @@ float LUDeterminant(LU LUP){
 
 large_mat solveLx(large_mat L, x){   
 
-    large_mat a = buildmat(x.cols, 1);
+    large_mat a;
+    a->buildmat(x.cols, 1);
     large_mat x_temp = x;
     //WOKRING VERSION PREVIOUSLY DID NOT SUBTRACT 1, THIS IS A TEST
     for(int j = 0; j <= L.cols - 1; j++){
@@ -103,7 +105,8 @@ large_mat solveLx(large_mat L, x){
 }
 
 large_mat solveUx(large_mat U, x){   
-    large_mat a = buildmat(x.cols, 1);
+    large_mat a;
+    a->buildmat(x.cols, 1);
     large_mat x_temp = x;
     //WOKRING VERSION PREVIOUSLY DID NOT SUBTRACT 1, THIS IS A TEST
     for(int j = U.cols - 1; j >= 0; j--){
@@ -146,18 +149,17 @@ large_mat LUInverse(large_mat A){
     large_mat storage = A;
     LU decomp = LUDecomp(A);
 
-    large_mat ident = largeident(A.rows);
+    large_mat ident;
+    ident->largeident(A.rows);
 
     large_mat lower = decomp->extractlower();
     large_mat upper = decomp->extractupper();
 
     
     for(int i = 0; i < A.rows; i++){
-        large_mat b = largevect(ident->getcol(i));
-        
+        large_mat b;
+        b->buildvect(ident->getcol(i));
         large_mat inverse = solveLU(lower, upper, b);
-
-
         ident->setcol(i, inverse.mat);
     }
 
