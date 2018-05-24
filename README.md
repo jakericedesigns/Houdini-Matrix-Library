@@ -77,15 +77,15 @@ Can't do that in vex by default, now can you? :smirk:
 
 Currently all solvers and decompositions live in their own include files, so be sure to check those out. The currently implemented methods are as follows:
 
-`SVDecomp()` - Returns a struct SVD which contains the 3 decomposed matrices, U, Sigma and V. This will work for non square matrices. Keep in mind that this currently uses the power method and is therefore not stable. You will get unexpected sign flipping. Should be updated to use householder reflections, but I'm too lazy currently.
+  * `SVDecomp()` - Returns a struct SVD which contains the 3 decomposed matrices, U, Sigma and V. This will work for non square matrices. Keep in mind that this currently uses the power method and is therefore not stable. You will get unexpected sign flipping. Should be updated to use householder reflections, but I'm too lazy currently.
 
-`LUDecomp()` - Returns a struct LU, which contains your upper and lower triangular matrices (currently due to a bug you must use the `extractupper()/extractlower()` functions to extract a large_mat from the LU Struct, will reach out to sidefx for help soon).
-+`solveLU()` takes in an LU struct and some vector `b` and solves for `Ax = b`
-+`LUDeterminant()` takes in an LU struct and returns the matrix's determinant
-+`LUInverse()` takes in an LU struct and returns the matrix's inverse
+  * `LUDecomp()` - Returns a struct LU, which contains your upper and lower triangular matrices (currently due to a bug you must use the `extractupper()/extractlower()` functions to extract a large_mat from the LU Struct, will reach out to sidefx for help soon).  
+     * `solveLU()` takes in an LU struct and some vector `b` and solves for `Ax = b`   
+     * `LUDeterminant()` takes in an LU struct and returns the matrix's determinant   
+     * `LUInverse()` takes in an LU struct and returns the matrix's inverse   
 
-`CholDecomp()` - Returns a struct Chol, which contains your lower triangular matrix and its conjugate transpose. 
-+`solveChol()` takes a struct Chol and some vector `b` and solves for `Ax = b`
+  * `CholDecomp()` - Returns a struct Chol, which contains your lower triangular matrix and its conjugate transpose. 
+   * `solveChol()` takes a struct Chol and some vector `b` and solves for `Ax = b`  
 
 ## TO DO:
 1. I'd love to go back through and ensure that all functions work with the column major way I've written this. (looking at you SVD and Cholesky)
