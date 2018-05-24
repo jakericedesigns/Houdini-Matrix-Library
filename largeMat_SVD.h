@@ -37,16 +37,20 @@ large_mat Singular_Value(large_mat A; float k){
 			//printf("Converged in %g iterations!", i);
 			break;
 		}
+		if(i > len(A.mat) * 5){
+			printf("DID NOT CONVERGE, num iterations: %g", i);
+			break;
+		} 
 	}	
 	return curr_v;
 }
 
 
-SVD SVDecomposition(large_mat A){
+SVD SVDecomp(large_mat A){
+
 	SVD current_svd;
 	large_mat U, V, Sigma;
-	//U->buildmat(A.cols, A.rows);
-	//V->buildmat(A.cols, A.cols);
+
 	V.rows = A.cols;
 	V.cols = A.cols;
 
