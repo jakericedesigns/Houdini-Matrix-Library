@@ -120,7 +120,7 @@ large_mat solveChol(large_mat L, LT, b){
 }
 
 
-large_mat Cholinverse(large_mat A){
+large_mat CholInverse(large_mat A){
     large_mat storage = A;
     LU decomp = LUDecomp(A);
 

@@ -85,8 +85,8 @@ Currently all solvers and decompositions live in their own include files, so be 
      * `LUInverse()` takes in an LU struct and returns the matrix's inverse   
 
   * `CholDecomp()` - Returns a struct Chol, which contains your lower triangular matrix and its conjugate transpose. 
-   * `solveChol()` takes a struct Chol and some vector `b` and solves for `Ax = b`  
-
+     * `solveChol()` takes a struct Chol and some vector `b` and solves for `Ax = b`  
+     * `CholInverse()` takes a struct Chol and reutrns the inverse of the input matrix
 ## TO DO:
 1. I'd love to go back through and ensure that all functions work with the column major way I've written this. (looking at you SVD and Cholesky)
 2. Add in a Conjugate Gradient solver. 
